@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NewComp version="0.1">
+	<component id="Conveyor">
+		<param name="obj_pos_x"      	type="variable" 	dynamics="output" />
+		<param name="obj_pos_y"      	type="variable" 	dynamics="output" />
+		<param name="obj_pos_z"     	type="variable" 	dynamics="output" />
+		
+		<param name="v"  		type="variable" 	dynamics="local" />
+		<param name="ls_pos_x"      	type="variable" 	dynamics="local" />
+		
+		<param name="epsilon_t" 	type="mu"	sensor="line sensor time error"	interpType="linear"	controlNum="3" />
+
+		<location id="1" name="Running">
+			<invariant> (obj_pos_x-ls_pos_x-v*epsilon_t) &lt;= 0.01 </invariant>
+			<flow> obj_pos_x'=v </flow>
+		</location>
+		<location id="2" name="Waiting">
+		</location>
+
+
+		<transition source="1" target="2" comm="true">
+			<label> stop </label>
+			<guard> (obj_pos_x-ls_pos_x-v*epsilon_t) &gt;=-0.01 </guard>
+		</transition>
+		<transition source="2" target="1" comm="false">
+			<label> run </label>
+			<guard> (obj_pos_x-ls_pos_x) &lt;0 </guard>
+		</transition>
+		<transition source="2" target="2" comm="true">
+			<label> notify </label>
+		</transition>
+	</component>
+</NewComp>
