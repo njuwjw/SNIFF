@@ -2,6 +2,7 @@
 ## Overview
 SNIFF is a scenario-based ***modeling*** and ***falsification*** tool for ***reconfigurable CPSs***.
 It supports:
+
 - `hierarchical modeling for reconfigurable CPS`:
   providing template models for agent inherent features, together with an instantiation mechanism to activate single agent's runtime behavior, communication configurations for multiple agents' connected behaviors, and scenario task configurations for their dynamic topologies.
 
@@ -11,26 +12,27 @@ It supports:
 
 ## Installation
 Dependencies:
-- Operating System: ?
-- Pre-installed software:?
+- Operating System: Ubuntu Desktop == 22.04.3 LTS
 
-To download ...
+>Our software can run directly on a computer with the newly installed operating system of Ubuntu Desktop 22.04.3 LTS. 
+>
+>For other environments, we cannot guarantee the stability of the software.
 
-    git clone ...
+To download our tool, clone the complete repository into a directory (named as ROOT, the same below) of your Ubuntu system.
 
-To install ...
-
-    sudo .....
+    git clone https://github.com/SNIFFanonymous/SNIFF.git
 
 
 ## Running SNIFF
-Click/Run to execute SNIFF, the terminal should then display as:
+You can run the below commands to execute SNIFF:
 
-    ?
+    cd ROOT/SNIFF tool
+    export LD_LIBRARY_PATH=./lib:LD_LIBRARY_PATH.
+    sudo chmod +x SNIFF
+    ./SNIFF
 
 
 Try demos in the `examples/` folder or create a project yourself:[fig]
-
 
 [todo]
 
@@ -40,16 +42,23 @@ Try demos in the `examples/` folder or create a project yourself:[fig]
 ```
 SNIFF
 ├── SNIFF tool
-│      ├── lib?
-│      └── script.sh?
+│      ├── lib
+│      ├── platforms
+│      └── SNIFF
 ├── examples
-│      ├── uav (models/specs........下面展开)
+│      ├── uav
+│            ├── models
+│            ├── tasks
+│            └── specs
 │      └── assemblyLine
+│            ├── models
+│            ├── tasks
+│            └── specs
 ├── experiments
 │      ├── ...LIB????????
 │      └── script.sh
 └── README
 ```
-- `SNIFF tool `: tool
+- `SNIFF tool `: Tools executable file and dependency libraries
 - `examples `: 
 - `experiments `: .........
