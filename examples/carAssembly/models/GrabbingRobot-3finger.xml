@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<NewComp version="0.1">
+    <component id="GrabbingRobot-3finger">
+        <param name="f1" type="variable" dynamics="local" />
+        <param name="f1_aim" type="variable" dynamics="input" />
+        <param name="f2" type="variable" dynamics="local" />
+        <param name="f2_aim" type="variable" dynamics="input" />
+        <param name="f3" type="variable" dynamics="local" />
+        <param name="f3_aim" type="variable" dynamics="input" />
+        <param name="vx" type="variable" dynamics="local" />
+        <param name="vy" type="variable" dynamics="local" />
+        <param name="vz" type="variable" dynamics="local" />
+        <param name="x" type="variable" dynamics="local" />
+        <param name="x_aim" type="variable" dynamics="input" />
+        <param name="y" type="variable" dynamics="local" />
+        <param name="y_aim" type="variable" dynamics="input" />
+        <param name="z" type="variable" dynamics="local" />
+        <param name="z_aim" type="variable" dynamics="input" />
+        <location id="1" name="Waiting" />
+        <location id="2" name="MovingPos">
+            <invariant>pow((x-x_aim),2) + pow((y-y_aim),2) + pow((z-z_aim),2) &gt; 0.01</invariant>
+            <flow>x&apos; = vx</flow>
+            <flow>y&apos; = vy</flow>
+            <flow>z&apos; = vz</flow>
+        </location>
+        <location id="3" name="MovingFinger">
+            <invariant>pow((f1-f1_aim),2) + pow((f2-f2_aim),2) + pow((f3-f3_aim),2) &gt; 0.01</invariant>
+            <flow>f1&apos;=10*(f1_aim-f1)</flow>
+            <flow>f2&apos;=10*(f2_aim-f2)</flow>
+            <flow>f3&apos;=10*(f3_aim-f3)</flow>
+        </location>
+        <transition source="2" target="3" comm="true">
+            <label>getAngle</label>
+            <guard>abs(x-x_aim) + abs(y-y_aim) + abs(z-z_aim) &lt;= 1</guard>
+            <reset>vx := 0</reset>
+            <reset>vy := 0</reset>
+            <reset>vz := 0</reset>
+        </transition>
+        <transition source="1" target="2" comm="true">
+            <label>getPos</label>
+            <reset>vx := 5*(x_aim-x)/max(abs(x-x_aim),max(abs(y-y_aim),abs(z-z_aim)))</reset>
+            <reset>vy := 5*(y_aim-y)/max(abs(x-x_aim),max(abs(y-y_aim),abs(z-z_aim)))</reset>
+            <reset>vz := 5*(z_aim-z)/max(abs(x-x_aim),max(abs(y-y_aim),abs(z-z_aim)))</reset>
+        </transition>
+        <transition source="3" target="1" comm="false">
+            <label>goWaiting</label>
+            <guard>abs(f1-f1_aim) + abs(f2-f2_aim) + abs(f3-f3_aim) &lt;= 1</guard>
+        </transition>
+    </component>
+</NewComp>

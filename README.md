@@ -50,7 +50,7 @@ SNIFF
 │            ├── models
 │            ├── tasks
 │            └── specs
-│      └── assemblyLine
+│      └── carAssembly
 │            ├── models
 │            ├── tasks
 │            └── specs

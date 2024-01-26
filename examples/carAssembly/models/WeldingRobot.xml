@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<NewComp version="0.1">
+    <component id="WeldingRobot">
+        <param name="weld_timer" type="variable" dynamics="local" />
+        <param name="welding_time" type="variable" dynamics="local" />
+        <param name="x" type="variable" dynamics="local" />
+        <param name="x_home" type="variable" dynamics="local" />
+        <param name="y" type="variable" dynamics="local" />
+        <param name="y_home" type="variable" dynamics="local" />
+        <param name="z" type="variable" dynamics="local" />
+        <param name="z_home" type="variable" dynamics="local" />
+        <param name="x_aim" type="mu" sensor="3d camera sensor" interpType="PWL" controlNum="1" />
+        <param name="y_aim" type="mu" sensor="3d camera sensor" interpType="PWL" controlNum="1" />
+        <param name="z_aim" type="mu" sensor="3d camera sensor" interpType="PWL" controlNum="1" />
+        <location id="1" name="Moving">
+            <invariant>pow((x-x_aim),2) + pow((y-y_aim),2) + pow((z-z_aim),2) &gt; 0.01</invariant>
+            <flow>x&apos; = 10*(x_aim-x)</flow>
+            <flow>y&apos; = 10*(y_aim-y)</flow>
+            <flow>z&apos; = 10*(z_aim-z)</flow>
+        </location>
+        <location id="2" name="Welding">
+            <invariant>weld_timer&lt;=welding_time+0.05</invariant>
+            <flow>weld_timer&apos;=1</flow>
+        </location>
+        <location id="3" name="Homing">
+            <invariant>pow((x-x_home),2) + pow((y-y_home),2) + pow((z-z_home),2) &gt; 0.01</invariant>
+            <flow>x&apos; = 10*(x_home-x)</flow>
+            <flow>y&apos; = 10*(y_home-y)</flow>
+            <flow>z&apos; = 10*(z_home-z)</flow>
+        </location>
+        <transition source="2" target="3" comm="false">
+            <label>goHoming</label>
+            <guard>weld_timer &gt;= welding_time-0.05</guard>
+        </transition>
+        <transition source="3" target="1" comm="false">
+            <label>goWaiting</label>
+            <guard>pow((x-x_home),2) + pow((y-y_home),2) + pow((z-z_home),2) &lt;= 0.1</guard>
+        </transition>
+        <transition source="1" target="2" comm="false">
+            <label>goWelding</label>
+            <guard>pow((x-x_aim),2) + pow((y-y_aim),2) + pow((z-z_aim),2) &lt;= 0.1</guard>
+            <reset>weld_timer := 0</reset>
+        </transition>
+    </component>
+</NewComp>

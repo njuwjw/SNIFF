@@ -1,100 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <NewComp version="0.1">
-	<component id="UAV">
-		<param name="inp11"   	type="variable" 	dynamics="input" />
-		<param name="inp21"   	type="variable" 	dynamics="input" />
-		<param name="inp31"   	type="variable" 	dynamics="input" />
-		<param name="inp41"   	type="variable" 	dynamics="input" />
-		<param name="inp51"   	type="variable" 	dynamics="input" />
-		<param name="inp61"   	type="variable" 	dynamics="input" />
-		<param name="inp71"   	type="variable" 	dynamics="input" />
-		<param name="inp12"   	type="variable" 	dynamics="input" />
-		<param name="inp22"   	type="variable" 	dynamics="input" />
-		<param name="inp32"   	type="variable" 	dynamics="input" />
-		<param name="inp42"   	type="variable" 	dynamics="input" />
-		<param name="inp52"   	type="variable" 	dynamics="input" />
-		<param name="inp62"   	type="variable" 	dynamics="input" />
-		<param name="inp72"   	type="variable" 	dynamics="input" />
-		<param name="inp13"   	type="variable" 	dynamics="input" />
-		<param name="inp23"   	type="variable" 	dynamics="input" />
-		<param name="inp33"   	type="variable" 	dynamics="input" />
-		<param name="inp43"   	type="variable" 	dynamics="input" />
-		<param name="inp53"   	type="variable" 	dynamics="input" />
-		<param name="inp63"   	type="variable" 	dynamics="input" />
-		<param name="inp73"   	type="variable" 	dynamics="input" />
-		
-		<param name="x"      	type="variable" 	dynamics="output" />
-		<param name="y"      	type="variable" 	dynamics="output" />
-		<param name="z"      	type="variable" 	dynamics="output" />
-		<param name="mu"     	type="variable" 	dynamics="output" />
-		<param name="sigma"    	type="variable" 	dynamics="output" />
-		<param name="v"     	type="variable" 	dynamics="output" />
-
-		<param name="x_aim"      	type="variable" 	dynamics="local" />
-		<param name="y_aim"      	type="variable" 	dynamics="local" />
-		<param name="z_aim"      	type="variable" 	dynamics="local" />
-		<param name="vx_aim"      	type="variable" 	dynamics="local" />
-		<param name="vy_aim"      	type="variable" 	dynamics="local" />
-		<param name="vz_aim"      	type="variable" 	dynamics="local" />
-		<param name="axy"      	    type="variable" 	dynamics="local" />
-		<param name="az"        	type="variable" 	dynamics="local" />
-		<param name="T"      	    type="variable" 	dynamics="local" />
-		<param name="timer"         type="variable" 	dynamics="local" />
-	
-        <param name="delay"         type="mu" 	sensor="commDelay" interpType="PWL" controlNum="1" />
-		
-		<location id="1" name="PositionControl">
-			<flow> x'=mu*cos(sigma) &amp; y'=mu*sin(sigma) &amp; z'=v  </flow>
-            <flow> mu'= sign(T/2-timer)*axy &amp; v'=sign(T/2-timer)*az</flow>
-            <flow> timer'=1 </flow>
-		</location>
-		<location id="2" name="VelocityControl">
-			<flow> x'=mu*cos(sigma) &amp; y'=mu*sin(sigma) &amp; z'=v  </flow>
-            <flow> mu'= axy &amp; v'=az</flow>
-            <flow> timer'=1 </flow>
-		</location>
-		<location id="3" name="Cruise">
-			<flow> x'=mu*cos(sigma) &amp; y'=mu*sin(sigma) &amp; z'=v  </flow>
-            <flow> timer'=1 </flow>
-		</location>
-
-
-		<transition source="1" target="3" comm="false" >
-			<label> Pos2Cruise </label>
-            <guard> timer &gt;= T </guard>
-			<reset> mu:=0 </reset>
-			<reset> v:=0 </reset>
-			<reset> timer:=0 </reset>
-		</transition>
-		<transition source="2" target="3" comm="false">
-			<label> Vel2Cruise </label>
-            <guard> timer &gt;= T </guard>
-			<reset> timer:=0 </reset>
-		</transition>
-		<transition source="3" target="1" comm="TRUE">
-			<label> commP </label>
-            <guard> timer &gt; delay </guard>
-			<reset> mu:=0 </reset>
-			<reset> v:=0 </reset>
-			<reset> sigma:=atan2(y_aim-y,x_aim-x) </reset>
-			<reset> timer:=0 </reset>
-            <reset> T := sqrt(2*max(sqrt(pow(x-x_aim,2)+pow(y-y_aim,2)),abs(z_aim-z)))  </reset>
-            <reset> axy := sqrt(pow(x-x_aim,2)+pow(y-y_aim,2))*4/(pow(T,2))</reset>
-            <reset> az := (z_aim-z)*4/(pow(T,2))</reset>
-		</transition>
-		<transition source="3" target="2" comm="True">
-			<label> commV </label>
-            <guard> timer &gt; delay </guard>
-			<reset> sigma:=atan2(vy_aim,vx_aim) </reset>
-			<reset> timer:=0 </reset>
-            <reset> T := max( abs( sqrt(pow(vx_aim,2)+pow(vy_aim,2))-mu ), abs(vz_aim-v) )/2  </reset>
-            <reset> axy := (sqrt(pow(vx_aim,2)+pow(vy_aim,2))-mu) / T </reset>
-            <reset> az := (vz_aim-v)/T</reset>
-		</transition>
-		<transition source="3" target="3" comm="true">
-			<label> comm  </label>
-            <guard> timer &gt; delay </guard>
-			<reset> timer:=0 </reset>
-		</transition>
-	</component>
+    <component id="UAV">
+        <param name="T" type="variable" dynamics="local" />
+        <param name="axy" type="variable" dynamics="local" />
+        <param name="az" type="variable" dynamics="local" />
+        <param name="inp11" type="variable" dynamics="input" />
+        <param name="inp12" type="variable" dynamics="input" />
+        <param name="inp13" type="variable" dynamics="input" />
+        <param name="inp21" type="variable" dynamics="input" />
+        <param name="inp22" type="variable" dynamics="input" />
+        <param name="inp23" type="variable" dynamics="input" />
+        <param name="inp31" type="variable" dynamics="input" />
+        <param name="inp32" type="variable" dynamics="input" />
+        <param name="inp33" type="variable" dynamics="input" />
+        <param name="inp41" type="variable" dynamics="input" />
+        <param name="inp42" type="variable" dynamics="input" />
+        <param name="inp43" type="variable" dynamics="input" />
+        <param name="inp51" type="variable" dynamics="input" />
+        <param name="inp52" type="variable" dynamics="input" />
+        <param name="inp53" type="variable" dynamics="input" />
+        <param name="inp61" type="variable" dynamics="input" />
+        <param name="inp62" type="variable" dynamics="input" />
+        <param name="inp63" type="variable" dynamics="input" />
+        <param name="inp71" type="variable" dynamics="input" />
+        <param name="inp72" type="variable" dynamics="input" />
+        <param name="inp73" type="variable" dynamics="input" />
+        <param name="mu" type="variable" dynamics="output" />
+        <param name="sigma" type="variable" dynamics="output" />
+        <param name="timer" type="variable" dynamics="local" />
+        <param name="v" type="variable" dynamics="output" />
+        <param name="vx_aim" type="variable" dynamics="local" />
+        <param name="vy_aim" type="variable" dynamics="local" />
+        <param name="vz_aim" type="variable" dynamics="local" />
+        <param name="x" type="variable" dynamics="output" />
+        <param name="x_aim" type="variable" dynamics="local" />
+        <param name="y" type="variable" dynamics="output" />
+        <param name="y_aim" type="variable" dynamics="local" />
+        <param name="z" type="variable" dynamics="output" />
+        <param name="z_aim" type="variable" dynamics="local" />
+        <param name="delay" type="mu" sensor="wireless comm" interpType="linear" controlNum="1" />
+        <location id="1" name="PositionControl">
+            <flow>x&apos;=mu*cos(sigma) &amp; y&apos;=mu*sin(sigma) &amp; z&apos;=v</flow>
+            <flow>mu&apos;= sign(T/2-timer)*axy &amp; v&apos;=sign(T/2-timer)*az</flow>
+            <flow>timer&apos;=1</flow>
+        </location>
+        <location id="2" name="VelocityControl">
+            <flow>x&apos;=mu*cos(sigma) &amp; y&apos;=mu*sin(sigma) &amp; z&apos;=v</flow>
+            <flow>mu&apos;= axy &amp; v&apos;=az</flow>
+            <flow>timer&apos;=1</flow>
+        </location>
+        <location id="3" name="Cruise">
+            <flow>x&apos;=mu*cos(sigma) &amp; y&apos;=mu*sin(sigma) &amp; z&apos;=v</flow>
+            <flow>timer&apos;=1</flow>
+        </location>
+        <transition source="3" target="3" comm="true">
+            <label>comm</label>
+            <guard>timer &gt; delay</guard>
+            <reset>timer := 0</reset>
+        </transition>
+        <transition source="3" target="1" comm="true">
+            <label>commP</label>
+            <guard>timer &gt; delay</guard>
+            <reset>T := sqrt(2*max(sqrt(pow(x-x_aim,2)+pow(y-y_aim,2)),abs(z_aim-z)))</reset>
+            <reset>axy := sqrt(pow(x-x_aim,2)+pow(y-y_aim,2))*4/(pow(T,2))</reset>
+            <reset>az := (z_aim-z)*4/(pow(T,2))</reset>
+            <reset>mu := 0</reset>
+            <reset>sigma := atan2(y_aim-y,x_aim-x)</reset>
+            <reset>timer := 0</reset>
+            <reset>v := 0</reset>
+        </transition>
+        <transition source="3" target="2" comm="true">
+            <label>commV</label>
+            <guard>timer &gt; delay</guard>
+            <reset>T := max( abs( sqrt(pow(vx_aim,2)+pow(vy_aim,2))-mu ), abs(vz_aim-v) )/2</reset>
+            <reset>axy := (sqrt(pow(vx_aim,2)+pow(vy_aim,2))-mu) / T</reset>
+            <reset>az := (vz_aim-v)/T</reset>
+            <reset>sigma := atan2(vy_aim,vx_aim)</reset>
+            <reset>timer := 0</reset>
+        </transition>
+        <transition source="2" target="3" comm="false">
+            <label>goCruise</label>
+            <guard>timer &gt;= T</guard>
+            <reset>timer := 0</reset>
+        </transition>
+        <transition source="1" target="3" comm="false">
+            <label>goHover</label>
+            <guard>timer &gt;= T</guard>
+            <reset>mu := 0</reset>
+            <reset>timer := 0</reset>
+            <reset>v := 0</reset>
+        </transition>
+    </component>
 </NewComp>
