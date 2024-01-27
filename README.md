@@ -12,13 +12,13 @@ It supports:
 
 ## Installation
 Dependencies:
-- Operating System: Ubuntu Desktop == 22.04.3 LTS
+- Operating System: Ubuntu Desktop >== 22.04.3 LTS
 
->Our software can run directly on a computer with the newly installed operating system of Ubuntu Desktop 22.04.3 LTS. 
+>SNIFF can be directly installed and run on Ubuntu Desktop 22.04.3 LTS.
 >
->For other environments, we cannot guarantee the stability of the software.
+>Other environments may also work, but compatibility with other environments is not guaranteed.
 
-To download our tool, clone the complete repository into a directory (named as ROOT, the same below) of your Ubuntu system.
+To download our tool, clone the entire repository into a directory (named DIR, the same as below) in your system.
 
     git clone https://github.com/SNIFFanonymous/SNIFF.git
 
@@ -27,7 +27,7 @@ To download our tool, clone the complete repository into a directory (named as R
 You can run the below commands to execute SNIFF:
 
 ```sh
-cd ROOT/SNIFF tool
+cd DIR/SNIFF tool
 export LD_LIBRARY_PATH=./lib:LD_LIBRARY_PATH.
 sudo chmod +x SNIFF
 ./SNIFF
@@ -42,7 +42,7 @@ In **"Agent Explorer"**, as shown in the figure below, agents in the CPS can be 
 
 <img src="README.source/Agent Explore.png" alt="Agent Explore" style="zoom:40%;" />
 
-In **"Task Explorer"**, as shown in the following picture, scenario tasks for the CPS can be created and organized hierarchically in the Task Tree on the left. Each atom task in the tree can be edited visually on the right. Specifically, agent instantiations can be edited in the Transition Activation tab, with inactivated global transitions shown in dotted arrows. Agent communication configurations can be edited in the Communication Configurations tab, with synchronized transitions highlighted in the same color. Note that synchronized transitions are automatically activated in this tool for convenience.
+In **"Task Explorer"**, as shown in the following picture, scenario tasks for the CPS can be created and organized hierarchically in the Task Tree on the left. Each atom task in the tree can be edited visually on the right. Specifically, agent instantiations can be edited in the Transition Activations tab, with inactivated global transitions shown in dotted arrows. Agent communication configurations can be edited in the Communication Configurations tab, with synchronized transitions highlighted in the same color. Note that synchronized transitions are automatically activated in this tool for convenience.
 
 <img src="README.source/Task Explorer.png" alt="Task Explorer" style="zoom:40%;" />
 
@@ -65,19 +65,18 @@ SNIFF
 │      └── SNIFF
 ├── examples
 │      ├── uav
-│            ├── models
-│            ├── tasks
-│            └── specs
+│      │     ├── models
+│      │     ├── tasks
+│      │     └── specs
 │      └── carAssembly
 │            ├── models
 │            ├── tasks
 │            └── specs
 ├── experiments
-│      ├── ...LIB????????
-│      └── script.sh
+│
 ├── README
 └── README.source
 ```
-- `SNIFF tool `: Tools executable file and dependency libraries
-- `examples `: 
-- `experiments `: .........
+- `SNIFF tool `: Tool's executable file and dependency libraries
+- `examples `: Demos of a Multi-UAV example system and a automatic assembly system
+
