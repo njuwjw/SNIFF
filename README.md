@@ -27,9 +27,9 @@ To download our tool, clone the entire repository into a directory (named DIR, t
 You can run the below commands to execute SNIFF:
 
 ```sh
-cd DIR/SNIFF tool
+cd DIR/SNIFFtool
 export LD_LIBRARY_PATH=./lib:LD_LIBRARY_PATH.
-sudo chmod +x SNIFF
+sudo chmod +x sniff
 ./SNIFF
 ```
 
@@ -60,7 +60,7 @@ Then, for the CPS running in any created scenario task, these system specificati
 
 ```
 SNIFF
-├── SNIFF tool
+├── SNIFFtool
 │      ├── lib
 │      ├── platforms
 │      └── SNIFF
@@ -78,6 +78,6 @@ SNIFF
 ├── README
 └── README.source
 ```
-- `SNIFF tool `: Tool's executable file and dependency libraries
+- `SNIFFtool `: Tool's executable file and dependency libraries
 - `examples `: Demos of a Multi-UAV example system and a automatic assembly system
 
