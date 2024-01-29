@@ -33,8 +33,9 @@ sudo chmod +x SNIFF
 ./SNIFF
 ```
 
-
 Try demos in the `examples/` folder or create a project yourself.
+
+<img src="README.source/Welcome.png" alt="Welcome" style="zoom:66%;" />
 
 We display the primary graphical user interfaces of **"SNIFF"** to illustrate how to model and falsify a reconfigurable CPS by it.
 
