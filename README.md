@@ -30,7 +30,7 @@ You can run the below commands to execute SNIFF:
 cd DIR/SNIFFtool
 export LD_LIBRARY_PATH=./lib:LD_LIBRARY_PATH.
 sudo chmod +x sniff
-./SNIFF
+./sniff
 ```
 
 Try demos in the `examples/` folder or create a project yourself.
