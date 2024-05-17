@@ -20,7 +20,7 @@ Dependencies:
 
 To download our tool, clone the entire repository into a directory (named DIR, the same as below) in your system.
 
-    git clone https://github.com/SNIFFanonymous/SNIFF.git
+    git clone https://github.com/njuwjw/SNIFF.git
 
 
 ## Running SNIFF
